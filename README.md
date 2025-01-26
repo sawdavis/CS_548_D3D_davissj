@@ -315,3 +315,15 @@ To run Visual Code:
 ***For Windows:*** double-click on this version of ```Code.exe```.
 
 ***For Linux/Mac:*** run ```./code```
+
+## Licenses and Citations
+This project relies on the following dependencies:
+
+- [Open3D](https://www.open3d.org), an open-source library for 3D data processing.
+  - Open3D is licensed under the **MIT License**.
+  - Original paper: [Zhou, Park, and Koltun (2018)](https://arxiv.org/abs/1801.09847)
+  - Open3D GitHub: [https://github.com/isl-org/Open3D](https://github.com/isl-org/Open3D)
+- [Point Cloud Library (PCL)](https://pointclouds.org) for point cloud processing.
+  - PCL is licensed under the **BSD 3-Clause License**.
+  - Original paper: [Rusu & Cousins (2011)](https://ieeexplore.ieee.org/document/5980567)
+  - PCL GitHub: [https://github.com/PointCloudLibrary/pcl](https://github.com/PointCloudLibrary/pcl)
