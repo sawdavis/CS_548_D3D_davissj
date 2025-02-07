@@ -1,5 +1,7 @@
 {
-    "cmake.configureArgs": [
-        "-DCMAKE_TOOLCHAIN_FILE=${env:MY_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-    ]
+    "python.testing.pytestArgs": [
+        "python"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
