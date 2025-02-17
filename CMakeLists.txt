@@ -59,9 +59,9 @@ macro(CREATE_TEST target)
     add_executable(${target} ${GENERAL_SOURCES} "./src/tests/${target}.cpp")
     target_link_libraries(${target} PRIVATE ${ALL_LIBRARIES})    
     add_test(NAME ${target} COMMAND ${target}) 
+    set_tests_properties(${target} PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")   
 endmacro()
 
 CREATE_EXECUTABLE(SimplePCL)
-# CREATE_EXECUTABLE(Assign01)
-#CREATE_TEST(Test_Assign01)
-
+CREATE_EXECUTABLE(Assign01)
+CREATE_TEST(Test_Assign01)
