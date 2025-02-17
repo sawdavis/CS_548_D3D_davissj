@@ -1,5 +1,5 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
+#include "doctest/doctest.h"
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 #include <pcl/common/common.h>
@@ -30,7 +30,7 @@ void test_one_file(string filename) {
     // Load data with PCL function
     pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr ground_pcd(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
     if(pcl::io::loadPCDFile<pcl::PointXYZRGBNormal>(filename, *ground_pcd) == -1) {
-        cerr << "ERROR: Could not load file for test! " << filename << endl;
+        cerr << "TEST PROGRAM ERROR: Could not load PCD file: " << filename << endl;
         throw std::exception();
     }
 
@@ -53,13 +53,24 @@ void test_one_file(string filename) {
     }
 }
 
-TEST_CASE("testing PCD loading function...") {
+TEST_CASE("Non-existent file check") {
     // Test bad file
     CHECK(loadPCD("NOT_HERE.pcd") == nullptr);
+}
 
-    // Test actual data
+// Test actual data
+TEST_CASE("Loading BunnyXYZ.pcd") {
     test_one_file("./data/assign01/BunnyXYZ.pcd");  
+}
+
+TEST_CASE("Loading BunnyXYZN.pcd") {
     test_one_file("./data/assign01/BunnyXYZN.pcd"); 
+}
+
+TEST_CASE("Loading BunnyXYZNRGB.pcd") {
     test_one_file("./data/assign01/BunnyXYZNRGB.pcd");
+}
+
+TEST_CASE("Loading BunnyXYZRGB.pcd") {
     test_one_file("./data/assign01/BunnyXYZRGB.pcd");    
 }
