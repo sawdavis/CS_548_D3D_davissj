@@ -3,6 +3,11 @@ import numpy as np
 from enum import Enum
 import copy
 
+class CLEANUP_TYPE(Enum):
+     NOTHING = (0,0)
+     SOR = (1, 0.1)
+     ROR = (1, 0.001)
+
 def add_overall_noise(cloud, offset):
     rng = np.random.default_rng(seed=42)
     points = np.asarray(cloud.points)
@@ -41,6 +46,7 @@ def main():
     use_outlier_noise = True
     noise_scale = 0.005
     noise_prob = 0.1
+    clean_type = CLEANUP_TYPE.NOTHING
     
     noise_cloud = copy.deepcopy(orig_cloud)
     add_noise(noise_cloud, use_outlier_noise,
@@ -59,8 +65,11 @@ def main():
         noise_cloud = noise_cloud.translate((0.2, 0, 0))
     
         clean_cloud = copy.deepcopy(noise_cloud)
-        clean_cloud, _ = clean_cloud.remove_statistical_outlier(20, 1.0)
-            
+        if clean_type == CLEANUP_TYPE.SOR:        
+            clean_cloud, _ = clean_cloud.remove_statistical_outlier(20, 1.0)
+        elif clean_type == CLEANUP_TYPE.ROR:
+            clean_cloud, _ = clean_cloud.remove_radius_outlier(40, 0.005)
+                    
         clean_cloud = clean_cloud.translate((0.2, 0, 0))
     
         vis.clear_geometries()
@@ -76,8 +85,17 @@ def main():
         use_outlier_noise = not use_outlier_noise
         return update_clouds(vis)
     
+    def change_clean_type(vis):
+        nonlocal clean_type
+        clean_list = list(CLEANUP_TYPE)
+        current_index = clean_list.index(clean_type)
+        current_index = (current_index+1)%len(clean_list)
+        clean_type = clean_list[current_index]
+        return update_clouds(vis)
+        
     key_callbacks = {}
     key_callbacks[ord("Z")] = toggle_noise_type
+    key_callbacks[ord("E")] = change_clean_type
     
     o3d.visualization.draw_geometries_with_key_callbacks(
         [orig_cloud, noise_cloud, clean_cloud],
