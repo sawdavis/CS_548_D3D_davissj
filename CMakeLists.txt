@@ -84,12 +84,6 @@ macro(CREATE_TEST target)
 endmacro()
 
 CREATE_EXECUTABLE(SimplePCL)
-<<<<<<< HEAD
 CREATE_EXECUTABLE(Assign01)
 CREATE_TEST(Test_Assign01)
 
-=======
-#CREATE_EXECUTABLE(Assign01)
-#CREATE_TEST(Test_Assign01)
-CREATE_EXECUTABLE(SearchPCL)
->>>>>>> da29026ed12b0662e42c8674ecb2d54ca05289c2
