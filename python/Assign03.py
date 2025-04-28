@@ -1,3 +1,8 @@
+# Sawyer Davis
+# CS548 Assignment 3
+# 4/10/2025
+
+
 import numpy as np
 import open3d as o3d
 import copy
