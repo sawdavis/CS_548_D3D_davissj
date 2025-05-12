@@ -7,6 +7,20 @@ import numpy as np
 import open3d as o3d
 import copy
 
+def enforce_viewpoint_consistency(centroid, U, V, W, viewpoint=(0,0,30)):
+    # Get vector from point to viewpoint (camera)
+    to_view = viewpoint - centroid
+    # Normalize
+    to_view = to_view / np.linalg.norm(to_view)
+    # Get dot product of that with W
+    dot_val = np.dot(to_view, W)
+    # If negative, flip
+    if dot_val < 0:
+        W = -W
+        
+    # Return results
+    return U, V, W
+
 def compute_distances(center, points):
     return np.linalg.norm(points - center, axis=1)
 
@@ -21,6 +35,7 @@ def compute_weighted_PCA(points, weights):
     weighted_cov = (centered.T * weights) @ centered / weighted_sum
     eigvals, eigvecs = np.linalg.eigh(weighted_cov)
     U, V, W = eigvecs[:, 2], eigvecs[:, 1], eigvecs[:, 0]
+    U, V, W = enforce_viewpoint_consistency(centroid, U, V, W) 
     return centroid, U, V, W
 
 def project_points_to_plane(points, centroid, U, V, W):
@@ -87,7 +102,7 @@ def perform_moving_least_squares(cloud, radius, sigma):
         neighbors = points[idxs]
         new_point, normal = fit_to_polynomial(center, neighbors, sigma)
         color = [np.linalg.norm(new_point - center), 0, 0]
-        output_points.append(new_point)
+        output_points.append(new_point[0])
         output_normals.append(normal)
         output_colors.append(color)
 
